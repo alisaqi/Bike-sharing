@@ -31,7 +31,7 @@ while ans:
             lastname = input("enter Last name: ")
             birth_date =  '2014-02-17'
             gender = True if(input("enter name: ")) == 'true' else False
-            create_user(national_number,name,lastname,birth_date,gender)
+            create_user(dbname,national_number,name,lastname,birth_date,gender)
         elif choice == 2:
             pass
     # elif ans == "4":

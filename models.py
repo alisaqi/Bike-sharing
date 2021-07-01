@@ -1,15 +1,18 @@
 from typing import List
 from main import connect_to_DB
 from psycopg2._psycopg import AsIs
-from menu import dbname
+
 
 
 
 class Model:
-    cur, conn = connect_to_DB(dbname)
 
-    @classmethod
-    def get_attribute(cls,model_name: str, schema: str = 'public', is_view=False):
+
+
+    def __init__(self,dbname) -> None:
+        self.cur, self.conn = connect_to_DB(dbname)
+
+    def get_attribute(cls, model_name: str, schema: str = 'public', is_view=False):
         if not is_view:
             get_model_attribute_query = "SELECT *  FROM information_schema.columns WHERE table_schema = %s AND table_name   = %s;"
         else:
@@ -23,10 +26,7 @@ class Model:
             counter = counter + 1
         return attributes
 
-    def __init__(self,dbname) -> None:
 
-
-    @classmethod
     def select_query(cls, model_name: str = None, schema_name: str = 'public',
                      out_put_array: List[str] = None, condition=None, is_view=False):
 
@@ -71,7 +71,7 @@ class Model:
                     executed_outputs.append(executed_output)
                 return executed_outputs
 
-    @classmethod
+
     def insert_query(cls, model_name: str = None, schema_name: str = 'public',
                      input_array: dict = None):
         if model_name is not None:
@@ -93,7 +93,7 @@ class Model:
             cls.cur.execute(query, (AsIs(schema_name), AsIs(model_name)))
             cls.conn.commit()
 
-    @classmethod
+
     def update_query(cls, model_name: str, input_array: dict, schema_name: str = 'public',
                      condition=None):
         if model_name is not None:
@@ -113,7 +113,7 @@ class Model:
             cls.cur.execute(query, (AsIs(schema_name), AsIs(model_name)))
             cls.conn.commit()
 
-    @classmethod
+
     def delete_query(cls, model_name: str, condition: str, schema_name: str = 'public'):
         if model_name is not None:
             query = 'delete from %s."%s"' + condition
