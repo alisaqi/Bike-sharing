@@ -12,8 +12,8 @@ def create_tables(name):
         address_id INTEGER,
         street_name varchar(255),
         bicycle_capacity INTEGER,
-        available_bicycle INTEGER,
-        park_capacity INTEGER)
+        available_bicycle INTEGER
+        )
         
         """,
         """

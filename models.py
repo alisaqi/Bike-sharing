@@ -6,9 +6,6 @@ from psycopg2._psycopg import AsIs
 
 
 class Model:
-
-
-
     def __init__(self,dbname) -> None:
         self.cur, self.conn = connect_to_DB(dbname)
 
