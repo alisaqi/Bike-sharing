@@ -26,13 +26,14 @@ while ans:
         1.user
         2.stations
         3.trip
+        0.return
 
         """))
         if choice == 1:
             name = input("enter name: ")
             national_number =int(input("enter National number: "))
             lastname = input("enter Last name: ")
-            birth_date =  input("plese insert your birthdate in this type :('2014-02-17')")
+            birth_date =  str(input("plese insert your birthdate in this type (2014-02-15): "))
             gender = True if(input("please select your gender:(man or woman) ")) == 'man' else False
             create_user(dbname,national_number,name,lastname,birth_date,gender)
         elif choice == 2:
@@ -43,6 +44,7 @@ while ans:
             available_bicycle = int(input("please enter available bicycle "))
             # park_capacity = int(bicycle_capacity - available_bicycle)
             create_station(dbname, name, address_id, street_name, bicycle_capacity,available_bicycle)
+
         elif choice == 3:
             trip_cancel = None
             origin_acceptance = None
@@ -99,7 +101,10 @@ while ans:
             create_data_to_trip(dbname,user_id,origin_station_id,origin_acceptance,destination_acceptance,destination_station_id,False,'2020-04-10',trip_length = trip_length)
             if trip_cancel is None:
                 update_capacities(dbname,origin_station_id, destination_station_id)
+                print("data is created")
 
+            elif choice == 0:
+                exit(choice)
 
 
 
