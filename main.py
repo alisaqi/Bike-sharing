@@ -49,9 +49,3 @@ def connect_to_DB(name):
 
 
 
-
-# def data():
-
-#
-# cursor,con = connect()
-# CreateDB(cursor,con)

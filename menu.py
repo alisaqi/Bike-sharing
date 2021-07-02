@@ -1,6 +1,8 @@
 import main
 from table import create_tables
-from insert_data import create_user,create_station,check_available_origin
+from insert_data import create_user,create_station,check_available_origin,suggest_origin,check_available_destination,suggest_destination
+
+
 
 dbname = 'mis_9612743155'
 ans = True
@@ -48,7 +50,37 @@ while ans:
             if check_origin == True:
                 pass
             else:
+                list_suggusted_origins = []
                 print("please choose another origin: ")
+                list_suggusted_origins = suggest_origin(dbname,origin_station_id)
+                print(list_suggusted_origins)
+                print("choose one of these above: ")
+                choosen_suggested_origin = int(input())
+                if choosen_suggested_origin  not in list_suggusted_origins:
+                    choosen_suggested_origin= int(input("choose right station id, otherwise you don't like any of them type 0: "))
+                elif choosen_suggested_origin  in list_suggusted_origins:
+                    pass
+
+            destination_station_id = int(input("enter destination station number: "))
+            check_destination = check_available_destination(dbname, destination_station_id)
+            if check_destination == True:
+                pass
+            else:
+                list_suggusted_origins = []
+                print("please choose another destination: ")
+                list_suggusted_destination = suggest_destination(dbname, destination_station_id)
+                print(list_suggusted_destination)
+                print("choose one of these above: ")
+                choosen_suggested_destination = int(input())
+                if choosen_suggested_destination  not in list_suggusted_destination:
+                    choosen_suggested_destination = int(input("choose right station id, otherwise you don't like any of them type 0: "))
+                elif choosen_suggested_destination  in list_suggusted_destination:
+                    pass
+
+
+
+
+
 
 
 

@@ -40,14 +40,42 @@ def check_available_origin(dbname,origin_station_id):
     from models import Model
     model = Model(dbname=dbname)
     check_available = model.select_query(model_name="stations",condition= f'where id ={ origin_station_id} and available_bicycle > 0')
-    print(check_available)
+    # print(check_available)
     if len(check_available) > 0:
         return True
+
+def check_available_destination(dbname,destination_station_id):
+    from models import Model
+    model = Model(dbname=dbname)
+    check_available = model.select_query(model_name="stations",condition= f'where id ={ destination_station_id} and available_bicycle > 0')
+    # print(check_available)
+    if len(check_available) > 0:
+        return True
+
+
 def suggest_origin(dbname,origin_station_id):
     from models import Model
     model = Model(dbname=dbname)
     origin = model.select_query(model_name="stations",condition=f'where id ={origin_station_id}')
     street_name = origin[0]['street_name']
     suggest_origin = model.select_query(model_name="stations",condition= "where street_name ='" +street_name+ "'and available_bicycle > 0")
-    print(suggest_origin)
+    # print(suggest_origin[0])
+    list_suggusted_origins = []
+    for i in suggest_origin:
+        list_suggusted_origins.append(i['id'])
+    return list_suggusted_origins
 
+def suggest_destination(dbname,destination_station_id):
+    from models import Model
+    model = Model(dbname=dbname)
+    destination = model.select_query(model_name="stations",condition=f'where id ={destination_station_id}')
+    street_name = destination[0]['street_name']
+    suggest_destination = model.select_query(model_name="stations",condition= "where street_name ='" +street_name+ "'and available_bicycle > 0")
+    # print(suggest_destination[0])
+    list_suggusted_destination = []
+    for i in suggest_destination:
+        list_suggusted_destination.append(i['id'])
+    return list_suggusted_destination
+
+
+def insert_data_to_table(dbname,origin_station_id,destination_station_id)
