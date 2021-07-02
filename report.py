@@ -4,6 +4,8 @@ from models import Model
 import pandas as pd
 import matplotlib.pyplot as plt
 import psycopg2
+from datetime import date
+
 
 def report5(dbname):
     model = Model(dbname)
@@ -87,7 +89,7 @@ def report6(dbname):
 
     print("\nTrips of youngest user is below :\n")
     for i in rows:
-        if i[0] == (ids[dates.index(max(dates))]):
+        if i[0] == (ids[dates.index(max(dates))]) :
             print(pd.DataFrame({
                 'user id': i[0],
                 'origin station': i[1],
@@ -97,6 +99,35 @@ def report6(dbname):
                 'trip_length': [5]
 
             }))
-def report
+def report4(dbname):
+    price =  int(input("enter price per minute: "))
+    penalty =  int(input("enter penalty per trip: "))
+    model = Model(dbname)
+    result = model.select_query(model_name="trips")
+    profit,cancel,dates = [],[],[]
+    # for i in result:
+    #     if i['trip_cancel'] == True:
+    #         cancel.append(1)
+    #         profit.append()
+    #     profit.append(int(i['trip_length'])*price )
+    #     dates.append(i['trip_date'])
+    for i,row in enumerate(result):
+        if i == 0:
+            profit.append(int(row['trip_length']) * price)
+            dates.append(row['trip_date'])
+        else:
+            profit.append(int(row['trip_length']) * price + profit[i-1])
+            dates.append(row['trip_date'])
+        if row['trip_cancel'] :
+            profit[i] = profit[i] - penalty
+    dates.sort()
+    a = pd.DataFrame({
+        'date' : dates,
+        'profit' : profit
+    })
+    a= a.sort_values('date')
+    plt.plot(a['date'],a['profit'])
+    plt.show()
 
-report6('mis_9612743155')
+
+

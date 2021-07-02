@@ -1,7 +1,7 @@
 import main
 from table import create_tables
 from insert_data import create_user,create_station,check_available_origin,suggest_origin,check_available_destination,suggest_destination,create_data_to_trip,update_capacities
-from report import report5
+from report import report5,report4,report6
 
 
 dbname = 'mis_9612743155'
@@ -46,29 +46,36 @@ while ans:
             create_station(dbname, name, address_id, street_name, bicycle_capacity,available_bicycle)
 
         elif choice == 3:
-            trip_cancel = None
-            origin_acceptance = None
+            trip_cancel = False
+            origin_acceptance = False
             user_id = int(input("enter user id: "))
             origin_station_id = int(input("enter origin station number: "))
             check_origin = check_available_origin(dbname,origin_station_id)
             if check_origin == True:
                 origin_acceptance = True
+                origin_acceptance = True
             else:
 
                 print("please choose another origin: ")
                 list_suggusted_origins = suggest_origin(dbname,origin_station_id)
-                list_suggusted_origins.remove(origin_station_id)
+                try:
+                    list_suggusted_origins.remove(origin_station_id)
+                except:
+                    pass
                 print(list_suggusted_origins)
                 print("choose one of these above: ")
                 choosen_suggested_origin = int(input())
                 if choosen_suggested_origin  not in list_suggusted_origins:
                     choosen_suggested_origin= int(input("choose right station id, otherwise you don't like any of them type 0: "))
                     if choosen_suggested_origin == 0:
-                         trip_cancel = True
+                        trip_cancel = True
+
+
                     # else:
                     #     origin_acceptance = False
                 elif choosen_suggested_origin  in list_suggusted_origins:
                     origin_acceptance = False
+
 
             destination_acceptance = 0
             destination_station_id = int(input("enter destination station number: "))
@@ -94,22 +101,28 @@ while ans:
 
             # cancel = int(input("Is trip Accepted ? (Type 1 if yes, type 0 if NO)"))
             trip_length = 0
+            trip_date = input("enter trip date in this form (2020-04-10): ")
             # if cancel == 1:
             #     trip_cancel = False
             # else:
             #     trip_cancel = True
-            if trip_cancel is None:
+            if trip_cancel is False:
                 trip_length = int(input("please enter trip lenght in minutes: "))
-            create_data_to_trip(dbname,user_id,origin_station_id,origin_acceptance,destination_acceptance,destination_station_id,False,'2020-04-10',trip_length = trip_length)
-            if trip_cancel is None:
+            else:
+                pass
+            create_data_to_trip(dbname,user_id,origin_station_id,origin_acceptance,destination_acceptance,destination_station_id,trip_cancel,trip_date,trip_length = trip_length)
+
+            if trip_cancel is False:
                 update_capacities(dbname,origin_station_id, destination_station_id)
                 print("data is created")
+            else:
+                pass
 
-            elif choice == 0:
-                exit(choice)
+            # elif choice == 0:
+            #     exit(choice)
     elif  ans == "4":
         answer = True
-        while answer:
+        while answer != "0":
             print("""
             1.report 1
             2.report 2
@@ -117,11 +130,27 @@ while ans:
             4.report 4
             5.report 5
             6.report 6
+            0.RETURN
 
             """)
             answer = input("Which report would you like to see? ")
             if answer == "5":
                 report5(dbname)
+            elif answer == "6":
+                report6(dbname)
+            elif  answer == "4":
+                report4(dbname)
+            elif answer == "3":
+                print("OUT OF SERVICE :)))))))))))))")
+            elif answer == "2":
+                print("OUT OF SERVICE :)))))))))))))")
+            elif answer == "1":
+                print("OUT OF SERVICE :)))))))))))))")
+            elif answer == "0":
+                answer == "0"
+
+
+
 
 
 
