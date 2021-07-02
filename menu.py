@@ -1,7 +1,7 @@
 import main
 from table import create_tables
 from insert_data import create_user,create_station,check_available_origin,suggest_origin,check_available_destination,suggest_destination,create_data_to_trip,update_capacities
-
+from report import report5
 
 
 dbname = 'mis_9612743155'
@@ -57,6 +57,7 @@ while ans:
 
                 print("please choose another origin: ")
                 list_suggusted_origins = suggest_origin(dbname,origin_station_id)
+                list_suggusted_origins.remove(origin_station_id)
                 print(list_suggusted_origins)
                 print("choose one of these above: ")
                 choosen_suggested_origin = int(input())
@@ -78,6 +79,7 @@ while ans:
 
                 print("please choose another destination: ")
                 list_suggusted_destination = suggest_destination(dbname, destination_station_id)
+                list_suggusted_destination.remove(destination_station_id)
                 print(list_suggusted_destination)
                 print("choose one of these above: ")
                 choosen_suggested_destination = int(input())
@@ -105,7 +107,21 @@ while ans:
 
             elif choice == 0:
                 exit(choice)
+    elif  ans == "4":
+        answer = True
+        while answer:
+            print("""
+            1.report 1
+            2.report 2
+            3.report 3
+            4.report 4
+            5.report 5
+            6.report 6
 
+            """)
+            answer = input("Which report would you like to see? ")
+            if answer == "5":
+                report5(dbname)
 
 
 

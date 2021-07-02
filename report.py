@@ -1,27 +1,102 @@
 from main import connect_to_DB
 import main
+from models import Model
+import pandas as pd
+import matplotlib.pyplot as plt
+import psycopg2
 
-dbname = 'mis_9612743155' #input("enter db name: ")
-cursor,con = main.connect()
+def report5(dbname):
+    model = Model(dbname)
+    result = model.select_query(model_name="users")
+    men , women = [],[]
+    for r in result:
+        men.append(r) if r['gender'] == True else women.append(r)
+    label = ['men','women']
+    size = [len(men),len(women)]
+    plt.pie(size,labels=label)
+    plt.show()
+def report6(dbname):
+    model = Model(dbname)
+    result = model.select_query(model_name="users")
+    dates,ids = [],[]
+    for i in result:
+        dates.append(i['birthdate'])
+        ids.append(i['id'])
+    # print(ids[dates.index(min(dates))])
 
-ans = True
-while ans:
-    print("""
-    1.report 1
-    2.report 2
-    3.report 3
-    4.report 4
-    5.report 5
-    6.report 6
-    
-    """)
-    ans = input("Which report would you like to see? ")
-    if ans == 1:
-        # report1 = "SELECT trips.origin_station_id, Count(trips.origin_station_id) AS CountOforigin_station_id, trips.trip_cancel FROM trips GROUP BY trips.origin_station_id, trips.trip_cancel HAVING (((trips.trip_cancel)=None));"
-        # cursor.exexute(report1)
-        report1 = 'select * from trips'
-        cursor.exexute(report1)
-        print(report1)
-        for i in report1:
-            print(i)
-        # print(report1)
+    con = psycopg2.connect(
+        dbname=str(dbname),
+        user='postgres',
+        password='ali'
+    )
+
+    cursor = con.cursor()
+    trips_oldest = "select " \
+                   "trips.user_id, " \
+                   "trips.origin_station_id, " \
+                   "trips.destination_station_id, " \
+                   "trips.trip_cancel, " \
+                   "trips.trip_date, " \
+                   "trips.trip_length " \
+                   "from trips left join users on trips.user_id = users.id"
+    cursor.execute(trips_oldest)
+    rows = cursor.fetchall()
+
+    print("Trips of Oldest user is below :\n")
+    for i in rows:
+        if i[0]==(ids[dates.index(min(dates))]):
+            print(pd.DataFrame({
+                'user id' : i[0],
+                'origin station': i[1],
+                'destination_station_id' : i[2],
+                'destination_station_id': i[3],
+                'trip_date' : i[4],
+                'trip_length': [5]
+
+
+    }))
+
+    #================================
+
+
+    model = Model(dbname)
+    result = model.select_query(model_name="users")
+    dates, ids = [], []
+    for i in result:
+        dates.append(i['birthdate'])
+        ids.append(i['id'])
+    # print(ids[dates.index(min(dates))])
+
+    con = psycopg2.connect(
+        dbname=str(dbname),
+        user='postgres',
+        password='ali'
+    )
+
+    cursor = con.cursor()
+    trips_oldest = "select " \
+                   "trips.user_id, " \
+                   "trips.origin_station_id, " \
+                   "trips.destination_station_id, " \
+                   "trips.trip_cancel, " \
+                   "trips.trip_date, " \
+                   "trips.trip_length " \
+                   "from trips left join users on trips.user_id = users.id"
+    cursor.execute(trips_oldest)
+    rows = cursor.fetchall()
+
+    print("\nTrips of youngest user is below :\n")
+    for i in rows:
+        if i[0] == (ids[dates.index(max(dates))]):
+            print(pd.DataFrame({
+                'user id': i[0],
+                'origin station': i[1],
+                'destination_station_id': i[2],
+                'destination_station_id': i[3],
+                'trip_date': i[4],
+                'trip_length': [5]
+
+            }))
+def report
+
+report6('mis_9612743155')

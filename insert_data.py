@@ -106,4 +106,3 @@ def update_capacities (dbname,origin_station_id,destination_station_id):
         'available_bicycle': destination_capacity[0]['available_bicycle'] + 1
     }, condition=f'where id ={destination_station_id}')
 
-update_capacities('mis_9612743155',6,7)
