@@ -70,7 +70,7 @@ def suggest_destination(dbname,destination_station_id):
     model = Model(dbname=dbname)
     destination = model.select_query(model_name="stations",condition=f'where id ={destination_station_id}')
     street_name = destination[0]['street_name']
-    suggest_destination = model.select_query(model_name="stations",condition= "where street_name ='" +street_name+ "'and available_bicycle > 0")
+    suggest_destination = model.select_query(model_name="stations",condition= "where street_name ='" +street_name+ "'and bicycle_capacity - available_bicycle > 0")
     # print(suggest_destination[0])
     list_suggusted_destination = []
     for i in suggest_destination:
@@ -78,4 +78,32 @@ def suggest_destination(dbname,destination_station_id):
     return list_suggusted_destination
 
 
-def insert_data_to_table(dbname,origin_station_id,destination_station_id)
+def create_data_to_trip(dbname,user_id,origin_station_id,origin_acceptance,destination_acceptance,destination_station_id,trip_cancel,trip_date,trip_length):
+    from models import Model
+    model = Model(dbname=dbname)
+    update_data =  model.insert_query(model_name="trips",input_array={
+        'user_id': user_id,
+        'origin_station_id': origin_station_id,
+        'origin_acceptance': origin_acceptance,
+        'destination_acceptance': destination_acceptance,
+        'destination_station_id': destination_station_id,
+        'trip_cancel': trip_cancel,
+        'trip_date': trip_date,
+        'trip_length': trip_length,
+    })
+
+def update_capacities (dbname,origin_station_id,destination_station_id):
+    from models import Model
+    model = Model(dbname=dbname)
+    origin_capacity = model.select_query(model_name="stations",condition= f'where id ={origin_station_id}')
+    destination_capacity = model.select_query(model_name= "stations",condition= f'where id ={destination_station_id}')
+
+    update_capacities = model.update_query(model_name="stations", input_array={
+        'available_bicycle' : origin_capacity[0]['available_bicycle'] - 1
+    },condition= f'where id ={origin_station_id}')
+
+    update_capacities = model.update_query(model_name="stations", input_array={
+        'available_bicycle': destination_capacity[0]['available_bicycle'] + 1
+    }, condition=f'where id ={destination_station_id}')
+
+update_capacities('mis_9612743155',6,7)

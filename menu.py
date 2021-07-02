@@ -1,6 +1,6 @@
 import main
 from table import create_tables
-from insert_data import create_user,create_station,check_available_origin,suggest_origin,check_available_destination,suggest_destination
+from insert_data import create_user,create_station,check_available_origin,suggest_origin,check_available_destination,suggest_destination,create_data_to_trip,update_capacities
 
 
 
@@ -44,13 +44,15 @@ while ans:
             # park_capacity = int(bicycle_capacity - available_bicycle)
             create_station(dbname, name, address_id, street_name, bicycle_capacity,available_bicycle)
         elif choice == 3:
+            trip_cancel = None
+            origin_acceptance = None
             user_id = int(input("enter user id: "))
             origin_station_id = int(input("enter origin station number: "))
             check_origin = check_available_origin(dbname,origin_station_id)
             if check_origin == True:
-                pass
+                origin_acceptance = True
             else:
-                list_suggusted_origins = []
+
                 print("please choose another origin: ")
                 list_suggusted_origins = suggest_origin(dbname,origin_station_id)
                 print(list_suggusted_origins)
@@ -58,15 +60,20 @@ while ans:
                 choosen_suggested_origin = int(input())
                 if choosen_suggested_origin  not in list_suggusted_origins:
                     choosen_suggested_origin= int(input("choose right station id, otherwise you don't like any of them type 0: "))
+                    if choosen_suggested_origin == 0:
+                         trip_cancel = True
+                    # else:
+                    #     origin_acceptance = False
                 elif choosen_suggested_origin  in list_suggusted_origins:
-                    pass
+                    origin_acceptance = False
 
+            destination_acceptance = 0
             destination_station_id = int(input("enter destination station number: "))
             check_destination = check_available_destination(dbname, destination_station_id)
             if check_destination == True:
-                pass
+                destination_acceptance = True
             else:
-                list_suggusted_origins = []
+
                 print("please choose another destination: ")
                 list_suggusted_destination = suggest_destination(dbname, destination_station_id)
                 print(list_suggusted_destination)
@@ -74,8 +81,24 @@ while ans:
                 choosen_suggested_destination = int(input())
                 if choosen_suggested_destination  not in list_suggusted_destination:
                     choosen_suggested_destination = int(input("choose right station id, otherwise you don't like any of them type 0: "))
+                    if choosen_suggested_destination == 0:
+                        trip_cancel = True
+                    # else:
+                    #     destination_acceptance = False
                 elif choosen_suggested_destination  in list_suggusted_destination:
-                    pass
+                    destination_acceptance = False
+
+            # cancel = int(input("Is trip Accepted ? (Type 1 if yes, type 0 if NO)"))
+            trip_length = 0
+            # if cancel == 1:
+            #     trip_cancel = False
+            # else:
+            #     trip_cancel = True
+            if trip_cancel is None:
+                trip_length = int(input("please enter trip lenght in minutes: "))
+            create_data_to_trip(dbname,user_id,origin_station_id,origin_acceptance,destination_acceptance,destination_station_id,False,'2020-04-10',trip_length = trip_length)
+            if trip_cancel is None:
+                update_capacities(dbname,origin_station_id, destination_station_id)
 
 
 
