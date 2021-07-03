@@ -118,16 +118,6 @@ class Model:
             cls.conn.commit()
 
 
-# rows = Model.select_query(model_name='Customer', out_put_array=['id', 'name', 'f_name'])
-# for row in rows:
-#     print(row)
-# Model.insert_query(model_name='Customer', input_array={'name': "maryam",
-#                                                        'f_name': "vaqei",
-#                                                        'email': "mwaqei@gmail.com", 'hashd_password': "ppppp",'national_num':1234567})
-# Model.update_query(model_name='Customer', input_array={
-#     'name': 'Maryam'
-# }, condition="where id = 8")
-# Model.delete_query(model_name='Customer',condition='where id=8')
 def get_filter_list(table_name, filter_column):
     return Model.select_query(model_name=table_name, out_put_array=[filter_column])
 
