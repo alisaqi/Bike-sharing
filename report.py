@@ -105,12 +105,7 @@ def report4(dbname):
     model = Model(dbname)
     result = model.select_query(model_name="trips")
     profit,cancel,dates = [],[],[]
-    # for i in result:
-    #     if i['trip_cancel'] == True:
-    #         cancel.append(1)
-    #         profit.append()
-    #     profit.append(int(i['trip_length'])*price )
-    #     dates.append(i['trip_date'])
+
     for i,row in enumerate(result):
         if i == 0:
             profit.append(int(row['trip_length']) * price)
