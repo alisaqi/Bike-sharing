@@ -23,9 +23,13 @@ cache:
     - .cache/pip
     - venv/
 
+
 before_script:
   - python -V  # Print out python version for debugging
   - pip install virtualenv
+  - pip instal psycopg2
+  - pip install pandas
+  - pip install matplotlib
   - virtualenv venv
   - source venv/bin/activate
 
@@ -43,7 +47,7 @@ run:
     # run the command here
   artifacts:
     paths:
-      - dist/*.whl
+      - mis/main.py
 
 pages:
   script:
